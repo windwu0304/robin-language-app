@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>羅賓的語言修練之旅</title>
+<title>娜美的語言修練之旅</title>
 <meta name="description" content="小學一年級注音符號與英文字母練習">
 <meta name="theme-color" content="#ff6b6b">
 <link rel="manifest" href="./manifest.json">
@@ -96,7 +96,7 @@ header { background:white; border:1px solid var(--border); border-radius:8px; pa
 
 <div class="container">
   <header>
-    <div class="header-title">羅賓的語言修練之旅 📚</div>
+    <div class="header-title">娜美的語言修練之旅 📚</div>
     <div class="header-sub">小學一年級・注音符號・英文字母</div>
     <div class="prog-row">
       <span>答對 <strong><span id="correct">0</span></strong> 題</span>
@@ -181,41 +181,41 @@ const ZHUYIN_WORDS = [
 ];
 
 const ENGLISH_UPPER = [
-  {char:'A', sound:'letter A', hint:'Apple 的開頭', type:'english'},
-  {char:'B', sound:'letter B', hint:'Ball 的開頭', type:'english'},
-  {char:'C', sound:'letter C', hint:'Cat 的開頭', type:'english'},
-  {char:'D', sound:'letter D', hint:'Dog 的開頭', type:'english'},
-  {char:'E', sound:'letter E', hint:'Egg 的開頭', type:'english'},
-  {char:'F', sound:'letter F', hint:'Fish 的開頭', type:'english'},
-  {char:'G', sound:'letter G', hint:'Girl 的開頭', type:'english'},
-  {char:'H', sound:'letter H', hint:'Hat 的開頭', type:'english'},
-  {char:'I', sound:'letter I', hint:'Ice 的開頭', type:'english'},
-  {char:'J', sound:'letter J', hint:'Jump 的開頭', type:'english'},
-  {char:'K', sound:'letter K', hint:'King 的開頭', type:'english'},
-  {char:'L', sound:'letter L', hint:'Lion 的開頭', type:'english'},
-  {char:'M', sound:'letter M', hint:'Mom 的開頭', type:'english'},
-  {char:'N', sound:'letter N', hint:'No 的開頭', type:'english'},
-  {char:'O', sound:'letter O', hint:'Orange 的開頭', type:'english'},
-  {char:'P', sound:'letter P', hint:'Pig 的開頭', type:'english'},
+  {char:'A', sound:'A', hint:'Apple 的開頭', type:'english'},
+  {char:'B', sound:'B', hint:'Ball 的開頭', type:'english'},
+  {char:'C', sound:'C', hint:'Cat 的開頭', type:'english'},
+  {char:'D', sound:'D', hint:'Dog 的開頭', type:'english'},
+  {char:'E', sound:'E', hint:'Egg 的開頭', type:'english'},
+  {char:'F', sound:'F', hint:'Fish 的開頭', type:'english'},
+  {char:'G', sound:'G', hint:'Girl 的開頭', type:'english'},
+  {char:'H', sound:'H', hint:'Hat 的開頭', type:'english'},
+  {char:'I', sound:'I', hint:'Ice 的開頭', type:'english'},
+  {char:'J', sound:'J', hint:'Jump 的開頭', type:'english'},
+  {char:'K', sound:'K', hint:'King 的開頭', type:'english'},
+  {char:'L', sound:'L', hint:'Lion 的開頭', type:'english'},
+  {char:'M', sound:'M', hint:'Mom 的開頭', type:'english'},
+  {char:'N', sound:'N', hint:'No 的開頭', type:'english'},
+  {char:'O', sound:'O', hint:'Orange 的開頭', type:'english'},
+  {char:'P', sound:'P', hint:'Pig 的開頭', type:'english'},
 ];
 
 const ENGLISH_LOWER = [
-  {char:'a', sound:'letter a', hint:'apple 的開頭', type:'english'},
-  {char:'b', sound:'letter b', hint:'ball 的開頭', type:'english'},
-  {char:'c', sound:'letter c', hint:'cat 的開頭', type:'english'},
-  {char:'d', sound:'letter d', hint:'dog 的開頭', type:'english'},
-  {char:'e', sound:'letter e', hint:'egg 的開頭', type:'english'},
-  {char:'f', sound:'letter f', hint:'fish 的開頭', type:'english'},
-  {char:'g', sound:'letter g', hint:'girl 的開頭', type:'english'},
-  {char:'h', sound:'letter h', hint:'hat 的開頭', type:'english'},
-  {char:'i', sound:'letter i', hint:'ice 的開頭', type:'english'},
-  {char:'j', sound:'letter j', hint:'jump 的開頭', type:'english'},
-  {char:'k', sound:'letter k', hint:'king 的開頭', type:'english'},
-  {char:'l', sound:'letter l', hint:'lion 的開頭', type:'english'},
-  {char:'m', sound:'letter m', hint:'mom 的開頭', type:'english'},
-  {char:'n', sound:'letter n', hint:'no 的開頭', type:'english'},
-  {char:'o', sound:'letter o', hint:'orange 的開頭', type:'english'},
-  {char:'p', sound:'letter p', hint:'pig 的開頭', type:'english'},
+  {char:'a', sound:'a', hint:'apple 的開頭', type:'english'},
+  {char:'b', sound:'b', hint:'ball 的開頭', type:'english'},
+  {char:'c', sound:'c', hint:'cat 的開頭', type:'english'},
+  {char:'d', sound:'d', hint:'dog 的開頭', type:'english'},
+  {char:'e', sound:'e', hint:'egg 的開頭', type:'english'},
+  {char:'f', sound:'f', hint:'fish 的開頭', type:'english'},
+  {char:'g', sound:'g', hint:'girl 的開頭', type:'english'},
+  {char:'h', sound:'h', hint:'hat 的開頭', type:'english'},
+  {char:'i', sound:'i', hint:'ice 的開頭', type:'english'},
+  {char:'j', sound:'j', hint:'jump 的開頭', type:'english'},
+  {char:'k', sound:'k', hint:'king 的開頭', type:'english'},
+  {char:'l', sound:'l', hint:'lion 的開頭', type:'english'},
+  {char:'m', sound:'m', hint:'mom 的開頭', type:'english'},
+  {char:'n', sound:'n', hint:'no 的開頭', type:'english'},
+  {char:'o', sound:'o', hint:'orange 的開頭', type:'english'},
+  {char:'p', sound:'p', hint:'pig 的開頭', type:'english'},
 ];
 
 const PRAISE = ['太棒了！📚','答對了！🌸','完全正確！✨','很好！🌺'];
