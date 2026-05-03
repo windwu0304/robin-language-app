@@ -6,9 +6,10 @@
 <title>羅賓的語言修練之旅</title>
 <meta name="description" content="小學一年級注音符號與英文字母練習">
 <meta name="theme-color" content="#ff6b6b">
-<link rel="manifest" href="/manifest.json">
-<link rel="icon" type="image/svg+xml" href="/icon.svg">
-<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
+<link rel="apple-touch-icon" href="./icon.svg">
+<link rel="shortcut icon" href="./icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -115,7 +116,13 @@ header { background:white; border:1px solid var(--border); border-radius:8px; pa
     <div class="card-title">🔊 聽音選字</div>
     <div class="q-title">點擊喇叭聽發音，選出正確答案</div>
     <button class="audio-btn" onclick="playSound()">
-      <span class="audio-icon">🔊</span>
+      <span class="audio-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+      </span>
       <span class="audio-text">播放發音</span>
     </button>
     <div class="options" id="options"></div>
@@ -244,16 +251,13 @@ function loadQuestion() {
   const pool = getQuestions();
   const q = rand(pool);
   
-  // 從同類型題庫中選擇錯誤選項（不混合注音和英文）
   const sameTypePool = pool.filter(x => x.type === q.type && x.char !== q.char);
   
-  // 確保有足夠的同類型題目
   if (sameTypePool.length < 3) {
     console.error('題庫不足，無法生成題目');
     return;
   }
   
-  // 隨機選3個錯誤答案
   const wrongOpts = [];
   const available = [...sameTypePool];
   for (let i = 0; i < 3; i++) {
@@ -289,7 +293,6 @@ function playSound() {
   u.lang = (state.current.type === 'english') ? 'en-US' : 'zh-TW';
   u.rate = 0.8;
   
-  // 對英文字母使用拼字模式，確保唸字母名稱而非單字
   if (state.current.type === 'english') {
     u.text = state.current.sound.toUpperCase();
     u.pitch = 1.0;
@@ -403,13 +406,11 @@ function selectCategory(cat) {
 
 loadQuestion();
 
-// 註冊 Service Worker（僅在生產環境）
 if ('serviceWorker' in navigator && location.hostname !== 'localhost' && !location.hostname.includes('claudeusercontent')) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('./sw.js')
       .then(reg => console.log('✅ Service Worker 註冊成功'))
       .catch(err => {
-        // 靜默失敗，不影響使用
         console.log('ℹ️ Service Worker 未啟用（開發模式）');
       });
   });
