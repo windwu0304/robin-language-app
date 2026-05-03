@@ -181,41 +181,41 @@ const ZHUYIN_WORDS = [
 ];
 
 const ENGLISH_UPPER = [
-  {char:'A', sound:'A', hint:'Apple 的開頭', type:'english'},
-  {char:'B', sound:'B', hint:'Ball 的開頭', type:'english'},
-  {char:'C', sound:'C', hint:'Cat 的開頭', type:'english'},
-  {char:'D', sound:'D', hint:'Dog 的開頭', type:'english'},
-  {char:'E', sound:'E', hint:'Egg 的開頭', type:'english'},
-  {char:'F', sound:'F', hint:'Fish 的開頭', type:'english'},
-  {char:'G', sound:'G', hint:'Girl 的開頭', type:'english'},
-  {char:'H', sound:'H', hint:'Hat 的開頭', type:'english'},
-  {char:'I', sound:'I', hint:'Ice 的開頭', type:'english'},
-  {char:'J', sound:'J', hint:'Jump 的開頭', type:'english'},
-  {char:'K', sound:'K', hint:'King 的開頭', type:'english'},
-  {char:'L', sound:'L', hint:'Lion 的開頭', type:'english'},
-  {char:'M', sound:'M', hint:'Mom 的開頭', type:'english'},
-  {char:'N', sound:'N', hint:'No 的開頭', type:'english'},
-  {char:'O', sound:'O', hint:'Orange 的開頭', type:'english'},
-  {char:'P', sound:'P', hint:'Pig 的開頭', type:'english'},
+  {char:'A', sound:'letter A', hint:'Apple 的開頭', type:'english'},
+  {char:'B', sound:'letter B', hint:'Ball 的開頭', type:'english'},
+  {char:'C', sound:'letter C', hint:'Cat 的開頭', type:'english'},
+  {char:'D', sound:'letter D', hint:'Dog 的開頭', type:'english'},
+  {char:'E', sound:'letter E', hint:'Egg 的開頭', type:'english'},
+  {char:'F', sound:'letter F', hint:'Fish 的開頭', type:'english'},
+  {char:'G', sound:'letter G', hint:'Girl 的開頭', type:'english'},
+  {char:'H', sound:'letter H', hint:'Hat 的開頭', type:'english'},
+  {char:'I', sound:'letter I', hint:'Ice 的開頭', type:'english'},
+  {char:'J', sound:'letter J', hint:'Jump 的開頭', type:'english'},
+  {char:'K', sound:'letter K', hint:'King 的開頭', type:'english'},
+  {char:'L', sound:'letter L', hint:'Lion 的開頭', type:'english'},
+  {char:'M', sound:'letter M', hint:'Mom 的開頭', type:'english'},
+  {char:'N', sound:'letter N', hint:'No 的開頭', type:'english'},
+  {char:'O', sound:'letter O', hint:'Orange 的開頭', type:'english'},
+  {char:'P', sound:'letter P', hint:'Pig 的開頭', type:'english'},
 ];
 
 const ENGLISH_LOWER = [
-  {char:'a', sound:'A', hint:'apple 的開頭', type:'english'},
-  {char:'b', sound:'B', hint:'ball 的開頭', type:'english'},
-  {char:'c', sound:'C', hint:'cat 的開頭', type:'english'},
-  {char:'d', sound:'D', hint:'dog 的開頭', type:'english'},
-  {char:'e', sound:'E', hint:'egg 的開頭', type:'english'},
-  {char:'f', sound:'F', hint:'fish 的開頭', type:'english'},
-  {char:'g', sound:'G', hint:'girl 的開頭', type:'english'},
-  {char:'h', sound:'H', hint:'hat 的開頭', type:'english'},
-  {char:'i', sound:'I', hint:'ice 的開頭', type:'english'},
-  {char:'j', sound:'J', hint:'jump 的開頭', type:'english'},
-  {char:'k', sound:'K', hint:'king 的開頭', type:'english'},
-  {char:'l', sound:'L', hint:'lion 的開頭', type:'english'},
-  {char:'m', sound:'M', hint:'mom 的開頭', type:'english'},
-  {char:'n', sound:'N', hint:'no 的開頭', type:'english'},
-  {char:'o', sound:'O', hint:'orange 的開頭', type:'english'},
-  {char:'p', sound:'P', hint:'pig 的開頭', type:'english'},
+  {char:'a', sound:'letter a', hint:'apple 的開頭', type:'english'},
+  {char:'b', sound:'letter b', hint:'ball 的開頭', type:'english'},
+  {char:'c', sound:'letter c', hint:'cat 的開頭', type:'english'},
+  {char:'d', sound:'letter d', hint:'dog 的開頭', type:'english'},
+  {char:'e', sound:'letter e', hint:'egg 的開頭', type:'english'},
+  {char:'f', sound:'letter f', hint:'fish 的開頭', type:'english'},
+  {char:'g', sound:'letter g', hint:'girl 的開頭', type:'english'},
+  {char:'h', sound:'letter h', hint:'hat 的開頭', type:'english'},
+  {char:'i', sound:'letter i', hint:'ice 的開頭', type:'english'},
+  {char:'j', sound:'letter j', hint:'jump 的開頭', type:'english'},
+  {char:'k', sound:'letter k', hint:'king 的開頭', type:'english'},
+  {char:'l', sound:'letter l', hint:'lion 的開頭', type:'english'},
+  {char:'m', sound:'letter m', hint:'mom 的開頭', type:'english'},
+  {char:'n', sound:'letter n', hint:'no 的開頭', type:'english'},
+  {char:'o', sound:'letter o', hint:'orange 的開頭', type:'english'},
+  {char:'p', sound:'letter p', hint:'pig 的開頭', type:'english'},
 ];
 
 const PRAISE = ['太棒了！📚','答對了！🌸','完全正確！✨','很好！🌺'];
@@ -251,13 +251,16 @@ function loadQuestion() {
   const pool = getQuestions();
   const q = rand(pool);
   
+  // 從同類型題庫中選擇錯誤選項（不混合注音和英文）
   const sameTypePool = pool.filter(x => x.type === q.type && x.char !== q.char);
   
+  // 確保有足夠的同類型題目
   if (sameTypePool.length < 3) {
     console.error('題庫不足，無法生成題目');
     return;
   }
   
+  // 隨機選3個錯誤答案
   const wrongOpts = [];
   const available = [...sameTypePool];
   for (let i = 0; i < 3; i++) {
@@ -293,9 +296,9 @@ function playSound() {
   u.lang = (state.current.type === 'english') ? 'en-US' : 'zh-TW';
   u.rate = 0.8;
   
+  // iOS 需要空格才能正確唸字母
   if (state.current.type === 'english') {
-    u.text = state.current.sound.toUpperCase();
-    u.pitch = 1.0;
+    u.text = ' ' + state.current.sound.replace('letter ', '') + ' ';
   }
   
   speechSynthesis.speak(u);
@@ -406,11 +409,13 @@ function selectCategory(cat) {
 
 loadQuestion();
 
+// 註冊 Service Worker（僅在生產環境）
 if ('serviceWorker' in navigator && location.hostname !== 'localhost' && !location.hostname.includes('claudeusercontent')) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
+    navigator.serviceWorker.register('/sw.js')
       .then(reg => console.log('✅ Service Worker 註冊成功'))
       .catch(err => {
+        // 靜默失敗，不影響使用
         console.log('ℹ️ Service Worker 未啟用（開發模式）');
       });
   });
