@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>羅賓的語言修練之旅</title>
+<meta name="description" content="小學一年級注音符號與英文字母練習">
+<meta name="theme-color" content="#ff6b6b">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fff9f5;
+  --border: #e8d4c8;
+  --text: #1c1c1c;
+  --text-mid: #555;
+  --text-light: #888;
+  --accent: #ff6b6b;
+  --accent-light: #ffe0dc;
+  --green: #1a7f4b;
+  --green-bg: #f0faf4;
+  --red: #c0392b;
+  --red-bg: #fdf3f2;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Noto Sans TC',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:15px; line-height:1.6; padding:20px; }
+
+.container { max-width:720px; margin:0 auto; }
+header { background:white; border:1px solid var(--border); border-radius:8px; padding:20px; margin-bottom:20px; }
+.header-title { font-size:20px; font-weight:700; margin-bottom:8px; }
+.header-sub { font-size:14px; color:var(--text-light); }
+
+.prog-row { display:flex; justify-content:space-between; font-size:14px; color:var(--text-mid); margin:16px 0 8px; }
+.prog-row strong { color:var(--accent); }
+.prog-bar { height:6px; background:var(--border); border-radius:99px; overflow:hidden; }
+.prog-fill { height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+.card { background:white; border:1px solid var(--border); border-radius:8px; padding:24px; margin-bottom:16px; }
+.card-title { font-size:13px; font-weight:700; color:var(--text-light); margin-bottom:16px; text-transform:uppercase; }
+
+.q-title { font-size:16px; color:var(--text-mid); margin-bottom:16px; text-align:center; }
+.audio-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:16px; background:var(--accent); color:white; border:none; border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; margin-bottom:16px; }
+.audio-btn:hover { opacity:.9; }
+
+.options { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:16px; }
+.option { padding:20px; background:white; border:2px solid var(--border); border-radius:8px; font-size:20px; font-weight:700; text-align:center; cursor:pointer; transition:all .2s; min-height:80px; display:flex; align-items:center; justify-content:center; }
+.option.word { font-size:16px; line-height:1.5; }
+.option:hover { border-color:var(--accent); transform:translateY(-2px); }
+.option.selected { border-color:var(--accent); background:var(--accent-light); }
+.option.correct { border-color:var(--green); background:var(--green-bg); color:var(--green); }
+.option.wrong { border-color:var(--red); background:var(--red-bg); color:var(--red); }
+.option.disabled { cursor:not-allowed; opacity:.6; }
+
+.btn-primary { width:100%; padding:14px; background:var(--accent); color:white; border:none; border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; margin-bottom:12px; }
+.btn-primary:hover { opacity:.9; }
+.btn-primary:disabled { opacity:.5; cursor:not-allowed; }
+
+.feedback { padding:12px 16px; border-radius:8px; font-size:14px; font-weight:600; margin-bottom:12px; display:none; }
+.feedback.correct { background:var(--green-bg); color:var(--green); border:1px solid #aaddc4; display:block; }
+.feedback.wrong { background:var(--red-bg); color:var(--red); border:1px solid #f0b8b4; display:block; }
+.hint { background:#f8f9fa; padding:12px; border-radius:6px; margin-top:8px; font-size:13px; line-height:1.8; }
+
+.btn-next { width:100%; padding:14px; background:white; color:var(--text); border:2px solid var(--border); border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; display:none; }
+.btn-next:hover { border-color:var(--accent); color:var(--accent); }
+.btn-next.show { display:block; }
+
+.cat-buttons { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+.cat-btn { padding:8px 12px; background:white; border:2px solid var(--border); border-radius:8px; font-size:13px; font-weight:600; color:var(--text-mid); cursor:pointer; transition:all .2s; }
+.cat-btn:hover { border-color:var(--accent); color:var(--accent); }
+.cat-btn.active { background:var(--accent); border-color:var(--accent); color:white; }
+
+.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); align-items:center; justify-content:center; z-index:100; }
+.overlay.show { display:flex; }
+.result-box { background:white; border-radius:12px; padding:32px; max-width:360px; text-align:center; }
+.result-icon { font-size:56px; margin-bottom:16px; }
+.result-title { font-size:20px; font-weight:700; margin-bottom:12px; }
+.result-pct { font-size:48px; font-weight:700; color:var(--accent); margin-bottom:8px; }
+.result-score { font-size:16px; color:var(--text-light); margin-bottom:16px; }
+.result-msg { font-size:14px; color:var(--text-mid); line-height:1.6; margin-bottom:24px; }
+
+@media (max-width:480px) {
+  body { padding:12px; }
+  .card { padding:16px; }
+  .options { grid-template-columns:1fr; }
+  .option { font-size:18px; padding:16px; min-height:70px; }
+  .option.word { font-size:15px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-title">羅賓的語言修練之旅 📚</div>
+    <div class="header-sub">小學一年級・注音符號・英文字母</div>
+    <div class="prog-row">
+      <span>答對 <strong><span id="correct">0</span></strong> 題</span>
+      <span>已答 <span id="answered">0</span> / 20 題</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progBar" style="width:0%"></div></div>
+  </header>
+
+  <div class="card">
+    <div class="cat-buttons">
+      <button class="cat-btn active" data-cat="all" onclick="selectCategory('all')">全部</button>
+      <button class="cat-btn" data-cat="zhuyin" onclick="selectCategory('zhuyin')">注音符號</button>
+      <button class="cat-btn" data-cat="zhuyin-word" onclick="selectCategory('zhuyin-word')">注音拼音</button>
+      <button class="cat-btn" data-cat="english-upper" onclick="selectCategory('english-upper')">英文大寫</button>
+      <button class="cat-btn" data-cat="english-lower" onclick="selectCategory('english-lower')">英文小寫</button>
+    </div>
+    <div class="card-title">🔊 聽音選字</div>
+    <div class="q-title">點擊喇叭聽發音，選出正確答案</div>
+    <button class="audio-btn" onclick="playSound()">
+      <span>🔊</span>
+      <span>播放發音</span>
+    </button>
+    <div class="options" id="options"></div>
+    <button class="btn-primary" id="btnCheck" onclick="checkAnswer()" disabled>確認答案</button>
+    <div class="feedback" id="feedback"></div>
+    <button class="btn-next" id="btnNext" onclick="nextQuestion()">下一題 →</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="result-box">
+    <div class="result-icon" id="rIcon">🌟</div>
+    <div class="result-title" id="rTitle">練習完成！</div>
+    <div class="result-pct" id="rPct">0%</div>
+    <div class="result-score" id="rScore">0 / 20</div>
+    <div class="result-msg" id="rMsg"></div>
+    <button class="btn-primary" onclick="restart()">再練一次 🔄</button>
+  </div>
+</div>
+
+<script>
+const ZHUYIN = [
+  {char:'ㄅ', sound:'ㄅㄛ', hint:'爸爸的「ㄅ」', type:'zhuyin'},
+  {char:'ㄆ', sound:'ㄆㄛ', hint:'跑步的「ㄆ」', type:'zhuyin'},
+  {char:'ㄇ', sound:'ㄇㄛ', hint:'媽媽的「ㄇ」', type:'zhuyin'},
+  {char:'ㄈ', sound:'ㄈㄛ', hint:'飛機的「ㄈ」', type:'zhuyin'},
+  {char:'ㄉ', sound:'ㄉㄜ', hint:'大象的「ㄉ」', type:'zhuyin'},
+  {char:'ㄊ', sound:'ㄊㄜ', hint:'太陽的「ㄊ」', type:'zhuyin'},
+  {char:'ㄋ', sound:'ㄋㄜ', hint:'你好的「ㄋ」', type:'zhuyin'},
+  {char:'ㄌ', sound:'ㄌㄜ', hint:'老師的「ㄌ」', type:'zhuyin'},
+  {char:'ㄚ', sound:'ㄚ', hint:'阿姨的「ㄚ」', type:'zhuyin'},
+  {char:'ㄛ', sound:'ㄛ', hint:'哦的「ㄛ」', type:'zhuyin'},
+  {char:'ㄜ', sound:'ㄜ', hint:'鵝的「ㄜ」', type:'zhuyin'},
+  {char:'ㄞ', sound:'ㄞ', hint:'愛的「ㄞ」', type:'zhuyin'},
+  {char:'ㄠ', sound:'ㄠ', hint:'好的「ㄠ」', type:'zhuyin'},
+  {char:'ㄧ', sound:'ㄧ', hint:'一的「ㄧ」', type:'zhuyin'},
+  {char:'ㄨ', sound:'ㄨ', hint:'烏的「ㄨ」', type:'zhuyin'},
+];
+
+const ZHUYIN_WORDS = [
+  {char:'ㄇㄚ ㄇㄚ', sound:'媽媽', hint:'照顧你的人', type:'zhuyin-word'},
+  {char:'ㄅㄚ ㄅㄚ', sound:'爸爸', hint:'家裡的爸爸', type:'zhuyin-word'},
+  {char:'ㄍㄜ ㄍㄜ', sound:'哥哥', hint:'男生的兄弟', type:'zhuyin-word'},
+  {char:'ㄐㄧㄝˇ ㄐㄧㄝˇ', sound:'姐姐', hint:'女生的姐姐', type:'zhuyin-word'},
+  {char:'ㄉㄧˋ ㄉㄧˋ', sound:'弟弟', hint:'比你小的弟弟', type:'zhuyin-word'},
+  {char:'ㄇㄟˋ ㄇㄟˋ', sound:'妹妹', hint:'比你小的妹妹', type:'zhuyin-word'},
+  {char:'ㄇㄠ ㄇㄧ', sound:'貓咪', hint:'喵喵叫的動物', type:'zhuyin-word'},
+  {char:'ㄍㄡˇ ㄍㄡˇ', sound:'狗狗', hint:'汪汪叫的動物', type:'zhuyin-word'},
+  {char:'ㄌㄠˇ ㄕ', sound:'老師', hint:'學校教你的人', type:'zhuyin-word'},
+  {char:'ㄕㄨㄟˇ ㄍㄨㄛˇ', sound:'水果', hint:'蘋果、香蕉', type:'zhuyin-word'},
+  {char:'ㄕㄨ ㄅㄠ', sound:'書包', hint:'裝課本的袋子', type:'zhuyin-word'},
+  {char:'ㄑㄧㄢ ㄅㄧˇ', sound:'鉛筆', hint:'寫字的工具', type:'zhuyin-word'},
+  {char:'ㄒㄧㄤˋ ㄆㄧˊ', sound:'橡皮', hint:'擦掉鉛筆字', type:'zhuyin-word'},
+  {char:'ㄓㄨㄛ ㄗˇ', sound:'桌子', hint:'寫字用的桌子', type:'zhuyin-word'},
+  {char:'ㄧˇ ㄗˇ', sound:'椅子', hint:'坐的椅子', type:'zhuyin-word'},
+];
+
+const ENGLISH_UPPER = [
+  {char:'A', sound:'A', hint:'Apple 的開頭', type:'english'},
+  {char:'B', sound:'B', hint:'Ball 的開頭', type:'english'},
+  {char:'C', sound:'C', hint:'Cat 的開頭', type:'english'},
+  {char:'D', sound:'D', hint:'Dog 的開頭', type:'english'},
+  {char:'E', sound:'E', hint:'Egg 的開頭', type:'english'},
+  {char:'F', sound:'F', hint:'Fish 的開頭', type:'english'},
+  {char:'G', sound:'G', hint:'Girl 的開頭', type:'english'},
+  {char:'H', sound:'H', hint:'Hat 的開頭', type:'english'},
+  {char:'I', sound:'I', hint:'Ice 的開頭', type:'english'},
+  {char:'J', sound:'J', hint:'Jump 的開頭', type:'english'},
+  {char:'K', sound:'K', hint:'King 的開頭', type:'english'},
+  {char:'L', sound:'L', hint:'Lion 的開頭', type:'english'},
+  {char:'M', sound:'M', hint:'Mom 的開頭', type:'english'},
+  {char:'N', sound:'N', hint:'No 的開頭', type:'english'},
+  {char:'O', sound:'O', hint:'Orange 的開頭', type:'english'},
+  {char:'P', sound:'P', hint:'Pig 的開頭', type:'english'},
+];
+
+const ENGLISH_LOWER = [
+  {char:'a', sound:'A', hint:'apple 的開頭', type:'english'},
+  {char:'b', sound:'B', hint:'ball 的開頭', type:'english'},
+  {char:'c', sound:'C', hint:'cat 的開頭', type:'english'},
+  {char:'d', sound:'D', hint:'dog 的開頭', type:'english'},
+  {char:'e', sound:'E', hint:'egg 的開頭', type:'english'},
+  {char:'f', sound:'F', hint:'fish 的開頭', type:'english'},
+  {char:'g', sound:'G', hint:'girl 的開頭', type:'english'},
+  {char:'h', sound:'H', hint:'hat 的開頭', type:'english'},
+  {char:'i', sound:'I', hint:'ice 的開頭', type:'english'},
+  {char:'j', sound:'J', hint:'jump 的開頭', type:'english'},
+  {char:'k', sound:'K', hint:'king 的開頭', type:'english'},
+  {char:'l', sound:'L', hint:'lion 的開頭', type:'english'},
+  {char:'m', sound:'M', hint:'mom 的開頭', type:'english'},
+  {char:'n', sound:'N', hint:'no 的開頭', type:'english'},
+  {char:'o', sound:'O', hint:'orange 的開頭', type:'english'},
+  {char:'p', sound:'P', hint:'pig 的開頭', type:'english'},
+];
+
+const PRAISE = ['太棒了！📚','答對了！🌸','完全正確！✨','很好！🌺'];
+const WRONG = ['再想想看 🤔','加油，你可以的 💪','慢慢來沒關係 😊'];
+
+let state = {
+  category: 'all',
+  current: null,
+  selected: null,
+  done: false,
+  correct: 0,
+  answered: 0
+};
+
+function getQuestions() {
+  if (state.category === 'zhuyin') return ZHUYIN;
+  if (state.category === 'zhuyin-word') return ZHUYIN_WORDS;
+  if (state.category === 'english-upper') return ENGLISH_UPPER;
+  if (state.category === 'english-lower') return ENGLISH_LOWER;
+  if (state.category === 'english') return [...ENGLISH_UPPER, ...ENGLISH_LOWER];
+  return [...ZHUYIN, ...ZHUYIN_WORDS, ...ENGLISH_UPPER, ...ENGLISH_LOWER];
+}
+
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function rand(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function loadQuestion() {
+  const pool = getQuestions();
+  const q = rand(pool);
+  
+  // 從同類型題庫中選擇錯誤選項（不混合注音和英文）
+  const sameTypePool = pool.filter(x => x.type === q.type && x.char !== q.char);
+  
+  // 確保有足夠的同類型題目
+  if (sameTypePool.length < 3) {
+    console.error('題庫不足，無法生成題目');
+    return;
+  }
+  
+  // 隨機選3個錯誤答案
+  const wrongOpts = [];
+  const available = [...sameTypePool];
+  for (let i = 0; i < 3; i++) {
+    const idx = Math.floor(Math.random() * available.length);
+    wrongOpts.push(available[idx].char);
+    available.splice(idx, 1);
+  }
+  
+  const opts = shuffle([q.char, ...wrongOpts]);
+  
+  state.current = {...q, options: opts};
+  state.selected = null;
+  state.done = false;
+  
+  const optEl = document.getElementById('options');
+  optEl.innerHTML = '';
+  opts.forEach(opt => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    if (q.type === 'zhuyin-word') div.classList.add('word');
+    div.textContent = opt;
+    div.onclick = () => selectOption(opt, div);
+    optEl.appendChild(div);
+  });
+  
+  document.getElementById('btnCheck').disabled = true;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('btnNext').classList.remove('show');
+}
+
+function playSound() {
+  const u = new SpeechSynthesisUtterance(state.current.sound);
+  u.lang = (state.current.type === 'english') ? 'en-US' : 'zh-TW';
+  u.rate = 0.8;
+  
+  // 對英文字母使用拼字模式，確保唸字母名稱而非單字
+  if (state.current.type === 'english') {
+    u.text = state.current.sound.toUpperCase();
+    u.pitch = 1.0;
+  }
+  
+  speechSynthesis.speak(u);
+}
+
+function selectOption(opt, el) {
+  if (state.done) return;
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  state.selected = opt;
+  document.getElementById('btnCheck').disabled = false;
+}
+
+function checkAnswer() {
+  if (state.done || !state.selected) return;
+  state.done = true;
+  state.answered++;
+  
+  const ok = state.selected === state.current.char;
+  const fb = document.getElementById('feedback');
+  
+  document.querySelectorAll('.option').forEach(opt => {
+    opt.classList.add('disabled');
+    if (opt.textContent === state.current.char) opt.classList.add('correct');
+    else if (opt.textContent === state.selected) opt.classList.add('wrong');
+  });
+  
+  if (ok) {
+    state.correct++;
+    fb.className = 'feedback correct';
+    fb.innerHTML = rand(PRAISE);
+  } else {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `${rand(WRONG)}<div class="hint">正確答案：<strong>${state.current.char}</strong><br>${state.current.hint}</div>`;
+  }
+  
+  document.getElementById('btnCheck').disabled = true;
+  updateUI();
+  
+  if (state.answered >= 20) {
+    setTimeout(showResult, 1000);
+  } else {
+    document.getElementById('btnNext').classList.add('show');
+  }
+}
+
+function nextQuestion() {
+  loadQuestion();
+}
+
+function updateUI() {
+  document.getElementById('correct').textContent = state.correct;
+  document.getElementById('answered').textContent = state.answered;
+  document.getElementById('progBar').style.width = (state.answered / 20 * 100) + '%';
+}
+
+function showResult() {
+  const pct = Math.round(state.correct / 20 * 100);
+  document.getElementById('rPct').textContent = pct + '%';
+  document.getElementById('rScore').textContent = state.correct + ' / 20 題答對';
+  
+  let icon, title, msg;
+  if (pct === 100) {
+    icon = '🌸'; title = '考古學家・完美掌握！';
+    msg = '「歷史正文，完全解讀！」羅賓說：你已經完全掌握了這些文字，就像解讀古代文獻一樣精準！';
+  } else if (pct >= 80) {
+    icon = '📚'; title = '學者・優秀表現！';
+    msg = '「知識的力量在於累積。」羅賓微笑著說：你的表現很優秀，繼續保持這份好奇心！';
+  } else if (pct >= 60) {
+    icon = '🌺'; title = '研究員・持續進步！';
+    msg = '「每一個錯誤都是學習的機會。」羅賓溫柔地說：你正在進步，繼續努力！';
+  } else if (pct >= 40) {
+    icon = '📖'; title = '學習者・需要加油！';
+    msg = '「閱讀需要耐心。」羅賓鼓勵你：多看看參考資料，慢慢來會更好！';
+  } else {
+    icon = '🌱'; title = '初學者・從頭開始！';
+    msg = '「每個學者都有起點。」羅賓說：不要氣餒，從基礎開始，一步一步來！';
+  }
+  
+  document.getElementById('rIcon').textContent = icon;
+  document.getElementById('rTitle').textContent = title;
+  document.getElementById('rMsg').textContent = msg;
+  document.getElementById('overlay').classList.add('show');
+}
+
+function restart() {
+  state.current = null;
+  state.selected = null;
+  state.done = false;
+  state.correct = 0;
+  state.answered = 0;
+  updateUI();
+  document.getElementById('overlay').classList.remove('show');
+  loadQuestion();
+}
+
+function selectCategory(cat) {
+  state.category = cat;
+  state.correct = 0;
+  state.answered = 0;
+  updateUI();
+  
+  document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`[data-cat="${cat}"]`).classList.add('active');
+  
+  loadQuestion();
+}
+
+loadQuestion();
+
+// 註冊 Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker 註冊成功'))
+      .catch(err => console.log('Service Worker 註冊失敗', err));
+  });
+}
+</script>
+</body>
+</html>
