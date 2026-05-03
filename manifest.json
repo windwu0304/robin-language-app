@@ -2,14 +2,14 @@
   "name": "羅賓的語言修練之旅",
   "short_name": "語言修練",
   "description": "小學一年級注音符號與英文字母練習",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#fff9f5",
   "theme_color": "#ff6b6b",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
