@@ -7,8 +7,8 @@
 <meta name="description" content="小學一年級注音符號與英文字母練習">
 <meta name="theme-color" content="#ff6b6b">
 <link rel="manifest" href="/manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="apple-touch-icon" href="/icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -41,8 +41,10 @@ header { background:white; border:1px solid var(--border); border-radius:8px; pa
 .card-title { font-size:13px; font-weight:700; color:var(--text-light); margin-bottom:16px; text-transform:uppercase; }
 
 .q-title { font-size:16px; color:var(--text-mid); margin-bottom:16px; text-align:center; }
-.audio-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:16px; background:var(--accent); color:white; border:none; border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; margin-bottom:16px; }
-.audio-btn:hover { opacity:.9; }
+.audio-btn { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; padding:24px; background:transparent; color:var(--accent); border:3px dashed var(--accent); border-radius:12px; font-size:18px; font-weight:700; cursor:pointer; margin-bottom:20px; transition:all .2s; }
+.audio-btn:hover { background:var(--accent-light); border-style:solid; transform:scale(1.05); }
+.audio-icon { font-size:48px; }
+.audio-text { font-size:18px; }
 
 .options { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:16px; }
 .option { padding:20px; background:white; border:2px solid var(--border); border-radius:8px; font-size:20px; font-weight:700; text-align:center; cursor:pointer; transition:all .2s; min-height:80px; display:flex; align-items:center; justify-content:center; }
@@ -53,9 +55,9 @@ header { background:white; border:1px solid var(--border); border-radius:8px; pa
 .option.wrong { border-color:var(--red); background:var(--red-bg); color:var(--red); }
 .option.disabled { cursor:not-allowed; opacity:.6; }
 
-.btn-primary { width:100%; padding:14px; background:var(--accent); color:white; border:none; border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; margin-bottom:12px; }
-.btn-primary:hover { opacity:.9; }
-.btn-primary:disabled { opacity:.5; cursor:not-allowed; }
+.btn-primary { width:100%; padding:16px; background:var(--accent); color:white; border:none; border-radius:12px; font-size:18px; font-weight:700; cursor:pointer; margin-bottom:12px; box-shadow:0 4px 12px rgba(255,107,107,0.3); transition:all .2s; }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(255,107,107,0.4); }
+.btn-primary:disabled { opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
 
 .feedback { padding:12px 16px; border-radius:8px; font-size:14px; font-weight:600; margin-bottom:12px; display:none; }
 .feedback.correct { background:var(--green-bg); color:var(--green); border:1px solid #aaddc4; display:block; }
@@ -113,8 +115,8 @@ header { background:white; border:1px solid var(--border); border-radius:8px; pa
     <div class="card-title">🔊 聽音選字</div>
     <div class="q-title">點擊喇叭聽發音，選出正確答案</div>
     <button class="audio-btn" onclick="playSound()">
-      <span>🔊</span>
-      <span>播放發音</span>
+      <span class="audio-icon">🔊</span>
+      <span class="audio-text">播放發音</span>
     </button>
     <div class="options" id="options"></div>
     <button class="btn-primary" id="btnCheck" onclick="checkAnswer()" disabled>確認答案</button>
@@ -401,12 +403,15 @@ function selectCategory(cat) {
 
 loadQuestion();
 
-// 註冊 Service Worker
-if ('serviceWorker' in navigator) {
+// 註冊 Service Worker（僅在生產環境）
+if ('serviceWorker' in navigator && location.hostname !== 'localhost' && !location.hostname.includes('claudeusercontent')) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('Service Worker 註冊成功'))
-      .catch(err => console.log('Service Worker 註冊失敗', err));
+      .then(reg => console.log('✅ Service Worker 註冊成功'))
+      .catch(err => {
+        // 靜默失敗，不影響使用
+        console.log('ℹ️ Service Worker 未啟用（開發模式）');
+      });
   });
 }
 </script>
